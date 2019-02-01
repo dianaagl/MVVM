@@ -1,0 +1,48 @@
+﻿<Window x:Class="Project_One_MVVM.View.UserControlPanel"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Project_One_MVVM.View"
+        mc:Ignorable="d"
+        Title="UserControlPanel" Height="500.751" Width="1024.122">
+    <Grid Margin="0,0,0,0">
+        <Label Content="Admin Control" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="88"/>
+        <Rectangle HorizontalAlignment="Left" Height="105" Margin="10,41,0,0" Stroke="Black" VerticalAlignment="Top" Width="241" Fill="#FFE6C6C6"/>
+        <Label Content="Employee" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="105"/>
+        <Button Content="Create" HorizontalAlignment="Left" Margin="35,72,0,0" VerticalAlignment="Top" Width="187"/>
+        <Button Content="Read" HorizontalAlignment="Left" Margin="35,99,0,0" VerticalAlignment="Top" Width="187" Command="{Binding Read}"/>
+        <Rectangle HorizontalAlignment="Left" Height="105" Margin="268,41,0,0" Stroke="Black" VerticalAlignment="Top" Width="238" Fill="#FFD7D7E2"/>
+        <Label Content="Customer" HorizontalAlignment="Left" Margin="268,41,0,0" VerticalAlignment="Top" Width="103"/>
+        <Button Content="Create" HorizontalAlignment="Left" Margin="293,72,0,0" VerticalAlignment="Top" Width="184"/>
+        <Button Content="Read" HorizontalAlignment="Left" Margin="293,99,0,0" VerticalAlignment="Top" Width="184"/>
+        <Rectangle Fill="#FFBBDEC2" HorizontalAlignment="Left" Height="105" Margin="521,41,0,0" Stroke="Black" VerticalAlignment="Top" Width="241"/>
+        <Label Content="Products" HorizontalAlignment="Left" Margin="521,41,0,0" VerticalAlignment="Top" Width="97"/>
+        <Button Content="Create" HorizontalAlignment="Left" Margin="547,72,0,0" VerticalAlignment="Top" Width="186"/>
+        <Button Content="Read" HorizontalAlignment="Left" Margin="547,99,0,0" VerticalAlignment="Top" Width="186"/>
+        <Rectangle Fill="#FFE4E4C8" HorizontalAlignment="Left" Height="105" Margin="778,41,0,0" Stroke="Black" VerticalAlignment="Top" Width="223"/>
+        <Label Content="Invoices" HorizontalAlignment="Left" Margin="778,41,0,0" VerticalAlignment="Top" Width="84"/>
+        <Button Content="Create" HorizontalAlignment="Left" Margin="802,72,0,0" VerticalAlignment="Top" Width="172"/>
+        <Button Content="Read" HorizontalAlignment="Left" Margin="802,99,0,0" VerticalAlignment="Top" Width="172"/>
+        <Rectangle Fill="#FFE2BDE2" HorizontalAlignment="Left" Height="254" Margin="778,164,0,0" Stroke="Black" VerticalAlignment="Top" Width="223"/>
+        <Label Content="Other Controls" HorizontalAlignment="Left" Margin="778,164,0,0" VerticalAlignment="Top" Width="139"/>
+        <Button Content="View Cust Exp" HorizontalAlignment="Left" Margin="802,195,0,0" VerticalAlignment="Top" Width="172"/>
+        <Button Content="SQL Input" HorizontalAlignment="Left" Margin="802,222,0,0" VerticalAlignment="Top" Width="172"/>
+        <Button Content="Delete All" HorizontalAlignment="Left" Margin="802,374,0,0" VerticalAlignment="Top" Width="172"/>
+        <Button Content="SQL Join" HorizontalAlignment="Left" Margin="802,249,0,0" VerticalAlignment="Top" Width="172"/>
+        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Height="254" Margin="10,164,0,0" VerticalAlignment="Top" Width="752"/>
+        <Button Content="Update" HorizontalAlignment="Left" Margin="802,295,0,0" VerticalAlignment="Top" Width="172"/>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin="802,323,0,0" VerticalAlignment="Top" Width="172"/>
+        <Label Content="Console:" HorizontalAlignment="Left" Margin="10,430,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="79,432,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="683" SelectionBrush="Black">
+            <TextBox.BorderBrush>
+                <LinearGradientBrush EndPoint="0,20" MappingMode="Absolute" StartPoint="0,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FF030304" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBox.BorderBrush>
+        </TextBox>
+        <Button Content="Execute" HorizontalAlignment="Left" Margin="802,432,0,0" VerticalAlignment="Top" Width="172"/>
+
+    </Grid>
+</Window>
