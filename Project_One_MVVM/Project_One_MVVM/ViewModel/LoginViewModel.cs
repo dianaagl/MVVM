@@ -67,6 +67,12 @@ namespace Project_One_MVVM.ViewModel
             
 
             if (mySQLDatabase.Login(username, password)) {
+                if (username.Equals("admin"))
+                {
+                    ((App)Application.Current).User = App.ADMIN;
+                }
+                else ((App)Application.Current).User = App.EMPLOYEE;
+
                 UserControlPanel frm = new UserControlPanel();
                 frm.Show();
                 parentWindow.Hide();

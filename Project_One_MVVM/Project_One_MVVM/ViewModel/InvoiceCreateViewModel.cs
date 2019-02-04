@@ -57,7 +57,7 @@ namespace Project_One_MVVM.ViewModel
                     (view.Employee.SelectionBoxItem as Employee).Id,
                     listId,
                     Invoice.INVOICE);
-
+                view.Hide();
            });
         }
     }

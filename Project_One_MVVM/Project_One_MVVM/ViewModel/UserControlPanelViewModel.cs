@@ -22,48 +22,147 @@ namespace Project_One_MVVM.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private UserControlPanel userControlPanel;
-        public ICommand ReadCustomers{get; private set;}
+
         private string editTableName;
 
         private ObservableCollection<Employee> employeeList = new ObservableCollection<Employee>();
         private ObservableCollection<Product> productList = new ObservableCollection<Product>();
         private ObservableCollection<Customer> customerList = new ObservableCollection<Customer>();
         private ObservableCollection<Invoice> invoiceList = new ObservableCollection<Invoice>();
+        public ICommand CreateEmployees { get; private set; }
         public ICommand ReadEmployees { get; private set; }
-        public ICommand ReadProducts { get; private set; } 
+        public ICommand ReadProducts { get; private set; }
+        public ICommand CreateProducts { get; private set; } 
         public ICommand ReadInvoices { get; private set; }
+        public ICommand CreateInvoices { get; private set; }
+        public ICommand ReadCustomers { get; private set; }
+        public ICommand CreateCustomers { get; private set; }
         public ICommand Create { get; private set; }
         public ICommand AddCommand { get; private set; }
         public ICommand Delete { get; private set; }
+        public ICommand Update { get; private set; }
         public UserControlPanelViewModel(UserControlPanel userControlPanel)
         {
 
-            userControlPanel.dataGrid.CellEditEnding += dataGrid_RowEditEnding;
+            userControlPanel.dataGrid.CellEditEnding += updateRows;
+            this.userControlPanel = userControlPanel;
             ReadEmployees =  new ReadCommand(obj =>
                   {
+                      if(((App)Application.Current).User == App.ADMIN)
+                            userControlPanel.dataGrid.IsReadOnly = false;
+                      else userControlPanel.dataGrid.IsReadOnly = true;
+
                       editTableName = Employee.EMPLOYEE;
                     this.Read();
                   },this);
+            CreateEmployees = new ReadCommand(obj =>
+            {
+                if (((App)Application.Current).User == App.ADMIN)
+                {
+                    userControlPanel.dataGrid.IsReadOnly = false;
+                    this.Add();
+                }
+                else userControlPanel.dataGrid.IsReadOnly = true;
+
+                editTableName = Employee.EMPLOYEE;
+                
+            }, this);
+
             ReadProducts =  new ReadCommand(obj =>
                   {
+                      userControlPanel.dataGrid.IsReadOnly = false;
                       editTableName = Product.PRODUCT;
                      this.Read();
                   }, this);
+            CreateProducts = new ReadCommand(obj =>
+            {
+                userControlPanel.dataGrid.IsReadOnly = false;
+                editTableName = Product.PRODUCT;
+                this.Add();
+            }, this);
+ 
             ReadCustomers = new ReadCommand(obj =>
                 {
+                    userControlPanel.dataGrid.IsReadOnly = false;
                     editTableName = Customer.CUSTOMER;
                     this.Read();
                 }, this);
+            CreateCustomers = new ReadCommand(obj =>
+            {
+                userControlPanel.dataGrid.IsReadOnly = false;
+                editTableName = Customer.CUSTOMER;
+                this.Add();
+            }, this);
             ReadInvoices = new ReadCommand(obj =>
             {
+                userControlPanel.dataGrid.IsReadOnly = true;
                 editTableName = Invoice.INVOICE;
                 this.Read();
             }, this);
-
-            AddCommand = new ReadCommand(obj =>
+            CreateInvoices = new ReadCommand(obj =>
             {
+                userControlPanel.dataGrid.IsReadOnly = true;
+                editTableName = Invoice.INVOICE;
+                this.Add();
+            }, this);
+
+            Update = new ReadCommand(obj =>
+            {
+                Read();
+            }, this);
+              
+  
+
+            Delete = new ReadCommand(obj =>
+            {
+                int id;
                 switch (editTableName)
                 {
+                        
+                    case Customer.CUSTOMER:
+                        Customer item =  userControlPanel.dataGrid.SelectedItem as Customer;
+                        id = item.CustomerId;
+                        mySQLDatabase.Delete(Customer.CUSTOMER_ID, id, Customer.CUSTOMER);
+                       
+                        break;
+                    case Employee.EMPLOYEE:
+                        if (((App)Application.Current).User.Equals( App.ADMIN))
+                        {
+                            Employee itemEmpl = userControlPanel.dataGrid.SelectedItem as Employee;
+                            id = itemEmpl.Id;
+                            mySQLDatabase.Delete(Employee.ID, id, Employee.EMPLOYEE);
+                        }
+                        
+
+                        break;
+                    case Product.PRODUCT:
+                        Product itemProd = userControlPanel.dataGrid.SelectedItem as Product;
+                        id = itemProd.ProductId;
+                        mySQLDatabase.Delete(Product.PRODUCT_ID, id, Product.PRODUCT);
+                        
+                        break;
+                    case Invoice.INVOICE:
+                        if (((App)Application.Current).User == App.ADMIN)
+                        {
+                            Invoice invoice = userControlPanel.dataGrid.SelectedItem as Invoice;
+                            id = invoice.Id;
+                            mySQLDatabase.Delete(  Invoice.ID, id, Invoice.INVOICE);
+                        }
+                           
+
+                        
+                       
+                        break;
+                }
+                Read();
+                
+            }, this
+                );
+
+        }
+        public void Add()
+        {
+            switch(editTableName){
                     case Customer.CUSTOMER:
                         mySQLDatabase.Add(Customer.CUSTOMER_ID, Customer.CUSTOMER);
                         mySQLDatabase.ReadCustomers();
@@ -82,54 +181,12 @@ namespace Project_One_MVVM.ViewModel
                         mySQLDatabase.ReadProducts();
                         userControlPanel.dataGrid.ItemsSource = productList;
                         break;
-                }
-                userControlPanel.dataGrid.Items.Refresh();
-
-              
-            }, this);
-            this.userControlPanel = userControlPanel;
-            Create = new ReadCommand(obj =>
-                {
-                    InvoiceCreateView frm = new InvoiceCreateView();
-                    frm.Show();
-                }, this
-                );
-            Delete = new ReadCommand(obj =>
-            {
-                int id;
-                switch (editTableName)
-                {
-                        
-                    case Customer.CUSTOMER:
-                        Customer item =  userControlPanel.dataGrid.SelectedItem as Customer;
-                        id = item.CustomerId;
-                        mySQLDatabase.Delete(Customer.CUSTOMER_ID, id, Customer.CUSTOMER);
-                       
-                        break;
-                    case Employee.EMPLOYEE:
-                        Employee itemEmpl = userControlPanel.dataGrid.SelectedItem as Employee;
-                        id = itemEmpl.Id;
-                        mySQLDatabase.Delete(Employee.ID, id, Employee.EMPLOYEE);
-
-                        break;
-                    case Product.PRODUCT:
-                        Product itemProd = userControlPanel.dataGrid.SelectedItem as Product;
-                        id = itemProd.ProductId;
-                        mySQLDatabase.Delete(Product.PRODUCT_ID, id, Product.PRODUCT);
-                        
-                        break;
                     case Invoice.INVOICE:
-                        Invoice invoice = userControlPanel.dataGrid.SelectedItem as Invoice;
-                        id = invoice.Id;
-                        mySQLDatabase.Delete(Invoice.INVOICE, id, Invoice.INVOICE);
-                       
+                        InvoiceCreateView frm = new InvoiceCreateView();
+                        frm.Show();
                         break;
                 }
                 Read();
-                userControlPanel.dataGrid.Items.Refresh();
-            }, this
-                );
-
         }
         public void Read()
         {
@@ -164,7 +221,7 @@ namespace Project_One_MVVM.ViewModel
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-        private void dataGrid_RowEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        private void updateRows(object sender, DataGridCellEditEndingEventArgs e)
         {
             DataGrid dc = (DataGrid)sender;
             DataGridRow row1 = e.Row;

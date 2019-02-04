@@ -7,23 +7,26 @@
         mc:Ignorable="d"
         Title="InvoiceCreateView" Height="450" Width="800">
     <Grid Margin="0,0,0,23">
-        <ComboBox x:Name="customer" Margin="0,106,591,248">
+        <ComboBox x:Name="customer" Margin="150,95,441,266">
 
         </ComboBox>
-        <ComboBox x:Name="Employee" Margin="0,31,591,318">
+        <ComboBox x:Name="Employee" Margin="150,39,441,322">
 
         </ComboBox>
-        <ComboBox x:Name="Product" Margin="0,167,591,196">
+        <ComboBox x:Name="Product" Margin="150,153,441,208">
 
         </ComboBox>
-        <Label Margin="226,128,503,230" Content="Count" RenderTransformOrigin="0.5,0.5"/>
-        <TextBox x:Name="Count" Margin="206,171,483,196" RenderTransformOrigin="0.291,1.176">
+        <Label Margin="37,214,692,144" Content="Count" RenderTransformOrigin="0.492,0.237"/>
+        <TextBox x:Name="Count" Margin="150,214,441,153" RenderTransformOrigin="0.291,1.176">
 
 
         </TextBox>
-        <Button Margin="591,167,0,196" Content="Add product"  Command="{Binding AddProduct}"></Button>
-        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Height="90" Margin="314,167,0,0" VerticalAlignment="Top" Width="272"/>
-        <Button  Margin="0,240,591,115" Content="Add Invoice"  Command="{Binding AddInvoice}"></Button>
+        <Button Margin="150,266,441,95" Content="Add product"  Command="{Binding AddProduct}"></Button>
+        <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Height="338" Margin="389,38,0,0" VerticalAlignment="Top" Width="359"/>
+        <Button  Margin="150,322,441,39" Content="Add Invoice"  Command="{Binding AddInvoice}"></Button>
+        <Label Content="Employee" HorizontalAlignment="Left" Margin="36,39,0,0" VerticalAlignment="Top"/>
+        <Label Content="Customer" HorizontalAlignment="Left" Margin="37,95,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.508,0.038"/>
+        <Label Content="Product" HorizontalAlignment="Left" Margin="36,153,0,0" VerticalAlignment="Top" Height="35"/>
 
     </Grid>
 </Window>

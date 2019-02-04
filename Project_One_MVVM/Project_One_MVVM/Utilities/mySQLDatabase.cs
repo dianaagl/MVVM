@@ -59,24 +59,13 @@ namespace Project_One_MVVM.Utilities
             {
                 conn.Open();
 
-                string query = "SELECT * FROM Employee";
+                string query = String.Format( "SELECT * FROM Employee where username = '{0}' and password = '{1}'",username, password);
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataReader dataReader = cmd.ExecuteReader();
 
-                while (dataReader.Read())
+                if (dataReader.Read())
                 {
-                    Console.WriteLine(dataReader["username"]);
-                    Console.WriteLine(dataReader["password"]);
-
-                    if (username == Convert.ToString(dataReader["username"]) && password == Convert.ToString(dataReader["password"]))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                    
+                    return true;
                 }
                 return false;
             }
@@ -244,8 +233,9 @@ namespace Project_One_MVVM.Utilities
             foreach (int prodLI in prodListIds)
             {
                 conn.Open();
-                query = String.Format("SELECT * FROM Product INNER JOIN ProductsList on ProductsList.{1} = Product.{2} where ProductsList.id = {3}",
-               Product.PRODUCT_NAME, "productId", "productId", prodLI);
+                query = String.Format("SELECT Product.{0}, Product.{1}, Product.{2}, ProductsList.productCount  FROM Product INNER JOIN ProductsList on ProductsList.{3} = Product.{4} where ProductsList.id = {5}",
+               Product.PRODUCT_ID, Product.PRODUCT_NAME, Product.MEASURE, 
+                    "productId", "productId", prodLI);
                 MySqlCommand cmd2 = new MySqlCommand(query, conn);
                 MySqlDataReader dataReader2 = cmd2.ExecuteReader();
                 ObservableCollection<Product> prod = new ObservableCollection<Product>();
@@ -255,7 +245,7 @@ namespace Project_One_MVVM.Utilities
                     prod.Add(new Product(Convert.ToInt32(dataReader2[Product.PRODUCT_ID]),
                         Convert.ToString(dataReader2[Product.PRODUCT_NAME]), 0, ""));
                     orderList += Convert.ToString(dataReader2[Product.PRODUCT_NAME]) + " " + 
-                        Convert.ToString(dataReader2[Product.PRODUCT_COUNT]) + 
+                        Convert.ToString(dataReader2["productCount"]) + 
                         Convert.ToString(dataReader2[Product.MEASURE]) +"\n";
                 }
 
