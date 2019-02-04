@@ -25,15 +25,9 @@ namespace Project_One_MVVM
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new EmployeeViewModel(this);
+            DataContext = new LoginViewModel(this);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-        }
+       
     }
 }

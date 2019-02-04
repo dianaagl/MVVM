@@ -11,72 +11,113 @@ using Project_One_MVVM.Command;
 using Project_One_MVVM.View;
 using System.Windows.Controls;
 using System.Windows.Data;
+using MySql.Data.MySqlClient;
+using System.Windows;
+using System.Collections.ObjectModel;
+using System.Data;
 
 namespace Project_One_MVVM.ViewModel
 {
     class UserControlPanelViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private Database db;
         private UserControlPanel userControlPanel;
-        
+        public ICommand ReadCustomers{get; private set;}
+        private string editTableName;
 
-        private List<Employee> employeeList = new List<Employee>();
-
-        public ICommand Read { get; private set; }
+        private ObservableCollection<Employee> employeeList = new ObservableCollection<Employee>();
+        private ObservableCollection<Product> productList = new ObservableCollection<Product>();
+        private ObservableCollection<Customer> customerList = new ObservableCollection<Customer>();
+        public ICommand ReadEmployees { get; private set; }
+        public ICommand ReadProducts { get; private set; } 
+        public ICommand ReadInvoices { get; private set; }
         public ICommand Create { get; private set; }
+        public ICommand AddCommand { get; private set; }
 
         public UserControlPanelViewModel(UserControlPanel userControlPanel)
         {
-            Read = new UCPEmployeeRead(this);
-            this.userControlPanel = userControlPanel;
-        }
 
-        public void ReadEmployee()
-        {
-            db = new Database();
-            employeeList = db.ReadEmployee(employeeList);
-
-            DataGridTextColumn c1 = new DataGridTextColumn();
-            c1.Header = "Surname";
-            c1.Binding = new Binding("Surname");
-            c1.Width = 110;
-            userControlPanel.dataGrid.Columns.Add(c1);
-
-            DataGridTextColumn c2 = new DataGridTextColumn();
-            c2.Header = "Forename";
-            c2.Width = 110;
-            c2.Binding = new Binding("Forename");
-            userControlPanel.dataGrid.Columns.Add(c2);
-
-            DataGridTextColumn c3 = new DataGridTextColumn();
-            c3.Header = "DOB";
-            c3.Width = 110;
-            c3.Binding = new Binding("DOB");
-            userControlPanel.dataGrid.Columns.Add(c3);
-
-            DataGridTextColumn c4 = new DataGridTextColumn();
-            c4.Header = "Address";
-            c4.Width = 110;
-            c4.Binding = new Binding("Address");
-            userControlPanel.dataGrid.Columns.Add(c4);
-
-            DataGridTextColumn c5 = new DataGridTextColumn();
-            c5.Header = "Email";
-            c5.Width = 110;
-            c5.Binding = new Binding("Email");
-            userControlPanel.dataGrid.Columns.Add(c5);
-
-            DataGridTextColumn c6 = new DataGridTextColumn();
-            c6.Header = "Phone";
-            c6.Width = 110;
-            c6.Binding = new Binding("Phone");
-            userControlPanel.dataGrid.Columns.Add(c6);
-
-            foreach (Employee employee in employeeList)
+            userControlPanel.dataGrid.CellEditEnding += dataGrid_RowEditEnding;
+            ReadEmployees =  new ReadCommand(obj =>
+                  {
+                      editTableName = Employee.EMPLOYEE;
+                    this.Read();
+                  },this);
+            ReadProducts =  new ReadCommand(obj =>
+                  {
+                      editTableName = Product.PRODUCT;
+                     this.Read();
+                  }, this);
+            ReadCustomers = new ReadCommand(obj =>
+                {
+                    editTableName = Customer.CUSTOMER;
+                    this.Read();
+                }, this);
+            ReadInvoices = new ReadCommand(obj =>
             {
-                //Console.WriteLine(employee.Surname + " " + employee.Forename + " " + employee.Dob + " " + employee.Address + " " + employee.Email + " " + employee.Phone);
-                userControlPanel.dataGrid.Items.Add(new Employee(employee.Surname, employee.Forename, employee.Dob, employee.Address, employee.Email, employee.Phone, employee.Username, employee.Password));
+                editTableName = Invoice.INVOICE;
+                this.Read();
+            }, this);
+
+            AddCommand = new ReadCommand(obj =>
+            {
+                switch (editTableName)
+                {
+                    case Customer.CUSTOMER:
+                        mySQLDatabase.Add(Customer.CUSTOMER_ID, Customer.CUSTOMER);
+                        mySQLDatabase.ReadCustomers();
+                        break;
+                    case Employee.EMPLOYEE:
+                        mySQLDatabase.Add(Employee.ID, Employee.EMPLOYEE);
+                        mySQLDatabase.ReadEmployee();
+                        break;
+                    case Product.PRODUCT:
+                        mySQLDatabase.Add(Product.PRODUCT_ID, Product.PRODUCT);
+                        mySQLDatabase.ReadProducts();
+                        break;
+                }
+              
+            }, this);
+            this.userControlPanel = userControlPanel;
+            Create = new ReadCommand(obj =>
+                {
+                    EmployeeCreateView frm = new EmployeeCreateView();
+                    frm.Show();
+                }, this
+                );
+        }
+        private void setColumns(List<string> columnNames)
+        {
+            userControlPanel.dataGrid.Columns.Clear();
+            foreach(string columnName in columnNames){
+                DataGridTextColumn col = new DataGridTextColumn();
+                col.Header = columnName;
+                col.Width = 110;
+                col.Binding = new Binding(col.Header + " UpdateSourceTrigger = PropertyChanged"); 
+                userControlPanel.dataGrid.Columns.Add(col);
+            }
+        }
+        public void Read()
+        {
+            switch (editTableName)
+            {
+                case Employee.EMPLOYEE:
+                    employeeList = mySQLDatabase.ReadEmployee();
+                    userControlPanel.dataGrid.ItemsSource = employeeList;
+                    break;
+                case Customer.CUSTOMER:
+                    customerList = mySQLDatabase.ReadCustomers();
+                    userControlPanel.dataGrid.ItemsSource = customerList;
+                    break;
+                case Product.PRODUCT:
+                    productList = mySQLDatabase.ReadProducts();
+                    userControlPanel.dataGrid.ItemsSource = productList;
+                    break;
+                case Invoice.INVOICE:
+                    ObservableCollection<Invoice> InvoiceList = mySQLDatabase.ReadInvoices();
+                    DataGridTemplateColumn col = new DataGridTemplateColumn();// col = new DataGridTextColumn();
+                    userControlPanel.dataGrid.ItemsSource = InvoiceList;
+                    break;
             }
         }
 
@@ -87,6 +128,35 @@ namespace Project_One_MVVM.ViewModel
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+        private void dataGrid_RowEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            DataGrid dc = (DataGrid)sender;
+            DataGridRow row1 = e.Row;
+            string header = (string)e.Column.Header;
+            int id = 0;
+            string idN = "id";
+            switch (editTableName){
+                    
+                case Employee.EMPLOYEE:
+                    Employee rowE = dc.SelectedItems[0] as Employee;
+                     id = rowE.Id;
+                    break;
+                case Customer.CUSTOMER:
+                    Customer rowC = dc.SelectedItems[0] as Customer;
+                    id = rowC.CustomerId;
+                    break;
+                case Product.PRODUCT:
+                    Product rowP = dc.SelectedItems[0] as Product;
+                    id = rowP.ProductId;
+                    idN = Product.PRODUCT_ID;
+                    break;
+            }
+                
+           
+            TextBox value = e.EditingElement as TextBox;
+            mySQLDatabase.UpdateField(header, value.Text, id, editTableName, idN);
+            
         }
     }
 }

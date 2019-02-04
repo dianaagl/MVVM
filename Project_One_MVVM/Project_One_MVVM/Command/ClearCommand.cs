@@ -12,9 +12,9 @@ namespace Project_One_MVVM.Commands
     internal class ClearCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
-        EmployeeViewModel employeeViewModel;
+        LoginViewModel employeeViewModel;
 
-        public ClearCommand(EmployeeViewModel employeeViewModel)
+        public ClearCommand(LoginViewModel employeeViewModel)
         {
             this.employeeViewModel = employeeViewModel;
 

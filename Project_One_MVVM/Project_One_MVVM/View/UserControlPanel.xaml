@@ -10,24 +10,24 @@
         <Label Content="Admin Control" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="88"/>
         <Rectangle HorizontalAlignment="Left" Height="105" Margin="10,41,0,0" Stroke="Black" VerticalAlignment="Top" Width="241" Fill="#FFE6C6C6"/>
         <Label Content="Employee" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="105"/>
-        <Button Content="Create" HorizontalAlignment="Left" Margin="35,72,0,0" VerticalAlignment="Top" Width="187"/>
-        <Button Content="Read" HorizontalAlignment="Left" Margin="35,99,0,0" VerticalAlignment="Top" Width="187" Command="{Binding Read}"/>
+        <Button Content="Create" HorizontalAlignment="Left" Margin="35,72,0,0" VerticalAlignment="Top" Width="187" Command="{Binding CreateEmployees}"/>
+        <Button Content="Read" HorizontalAlignment="Left" Margin="35,99,0,0" VerticalAlignment="Top" Width="187" Command="{Binding ReadEmployees}"/>
         <Rectangle HorizontalAlignment="Left" Height="105" Margin="268,41,0,0" Stroke="Black" VerticalAlignment="Top" Width="238" Fill="#FFD7D7E2"/>
         <Label Content="Customer" HorizontalAlignment="Left" Margin="268,41,0,0" VerticalAlignment="Top" Width="103"/>
-        <Button Content="Create" HorizontalAlignment="Left" Margin="293,72,0,0" VerticalAlignment="Top" Width="184"/>
-        <Button Content="Read" HorizontalAlignment="Left" Margin="293,99,0,0" VerticalAlignment="Top" Width="184"/>
+        <Button Content="Create" HorizontalAlignment="Left" Margin="293,72,0,0" VerticalAlignment="Top" Width="184" Command="{Binding CreateCustomers}" />
+        <Button Content="Read" HorizontalAlignment="Left" Margin="293,99,0,0" VerticalAlignment="Top" Width="184" Command="{Binding ReadCustomers}" />
         <Rectangle Fill="#FFBBDEC2" HorizontalAlignment="Left" Height="105" Margin="521,41,0,0" Stroke="Black" VerticalAlignment="Top" Width="241"/>
         <Label Content="Products" HorizontalAlignment="Left" Margin="521,41,0,0" VerticalAlignment="Top" Width="97"/>
-        <Button Content="Create" HorizontalAlignment="Left" Margin="547,72,0,0" VerticalAlignment="Top" Width="186"/>
-        <Button Content="Read" HorizontalAlignment="Left" Margin="547,99,0,0" VerticalAlignment="Top" Width="186"/>
+        <Button Content="Create" HorizontalAlignment="Left" Margin="547,72,0,0" VerticalAlignment="Top" Width="186" Command="{Binding CreateProducts}"/>
+        <Button Content="Read" HorizontalAlignment="Left" Margin="547,99,0,0" VerticalAlignment="Top" Width="186" Command="{Binding ReadProducts}"/>
         <Rectangle Fill="#FFE4E4C8" HorizontalAlignment="Left" Height="105" Margin="778,41,0,0" Stroke="Black" VerticalAlignment="Top" Width="223"/>
         <Label Content="Invoices" HorizontalAlignment="Left" Margin="778,41,0,0" VerticalAlignment="Top" Width="84"/>
-        <Button Content="Create" HorizontalAlignment="Left" Margin="802,72,0,0" VerticalAlignment="Top" Width="172"/>
-        <Button Content="Read" HorizontalAlignment="Left" Margin="802,99,0,0" VerticalAlignment="Top" Width="172"/>
+        <Button Content="Create" HorizontalAlignment="Left" Margin="802,72,0,0" VerticalAlignment="Top" Width="172" Command="{Binding Create}"/>
+        <Button Content="Read" HorizontalAlignment="Left" Margin="802,99,0,0" VerticalAlignment="Top" Width="172" Command="{Binding ReadInvoices}" />
         <Rectangle Fill="#FFE2BDE2" HorizontalAlignment="Left" Height="254" Margin="778,164,0,0" Stroke="Black" VerticalAlignment="Top" Width="223"/>
         <Label Content="Other Controls" HorizontalAlignment="Left" Margin="778,164,0,0" VerticalAlignment="Top" Width="139"/>
         <Button Content="View Cust Exp" HorizontalAlignment="Left" Margin="802,195,0,0" VerticalAlignment="Top" Width="172"/>
-        <Button Content="SQL Input" HorizontalAlignment="Left" Margin="802,222,0,0" VerticalAlignment="Top" Width="172"/>
+        <Button Content="SQL Input" HorizontalAlignment="Left" Margin="802,222,0,0" VerticalAlignment="Top" Width="172" Command="{Binding AddCommand}"/>
         <Button Content="Delete All" HorizontalAlignment="Left" Margin="802,374,0,0" VerticalAlignment="Top" Width="172"/>
         <Button Content="SQL Join" HorizontalAlignment="Left" Margin="802,249,0,0" VerticalAlignment="Top" Width="172"/>
         <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Height="254" Margin="10,164,0,0" VerticalAlignment="Top" Width="752"/>

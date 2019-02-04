@@ -59,12 +59,16 @@
     <Compile Include="Command\ClearCommand.cs" />
     <Compile Include="Command\LoginCommand.cs" />
     <Compile Include="Command\UCPEmployeeCreate.cs" />
-    <Compile Include="Command\UCPEmployeeRead.cs" />
+    <Compile Include="Command\ReadCommand.cs" />
     <Compile Include="Model\Employee.cs" />
     <Compile Include="Model\Customer.cs" />
+    <Compile Include="Model\Invoice.cs" />
+    <Compile Include="Model\Person.cs" />
+    <Compile Include="Model\Product.cs" />
     <Compile Include="Utilities\Database.cs" />
     <Compile Include="Utilities\mySQLDatabase.cs" />
-    <Compile Include="ViewModel\EmployeeViewModel.cs" />
+    <Compile Include="ViewModel\EmployeeCreateViewModel.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\UserControlPanelViewModel.cs" />
     <Compile Include="View\CustomerCreateView.xaml.cs">
       <DependentUpon>CustomerCreateView.xaml</DependentUpon>

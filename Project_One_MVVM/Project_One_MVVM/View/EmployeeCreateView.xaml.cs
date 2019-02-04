@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Project_One_MVVM.Model;
+using Project_One_MVVM.ViewModel;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +25,7 @@ namespace Project_One_MVVM.View
         public EmployeeCreateView()
         {
             InitializeComponent();
+            DataContext = new EmployeeCreateViewModel(this);
         }
     }
 }

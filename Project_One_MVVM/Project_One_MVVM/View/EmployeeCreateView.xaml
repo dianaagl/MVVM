@@ -7,6 +7,22 @@
         mc:Ignorable="d"
         Title="EmployeeCreateView" Height="450" Width="800">
     <Grid>
-        
+        <ComboBox x:Name="customer" Margin="0,106,591,273">
+
+        </ComboBox>
+        <ComboBox x:Name="Employee" Margin="0,31,591,346">
+
+        </ComboBox>
+        <ComboBox x:Name="Product" Margin="0,182,591,196">
+
+        </ComboBox>
+        <Label Margin="223,167,409,225" Content="Count&#xD;&#xA;COunt"></Label>
+        <TextBox x:Name="Count" Margin="223,199,409,196" RenderTransformOrigin="0.291,1.176">
+           
+
+        </TextBox>
+        <Button Margin="415,182,176,196" Content="Add product"  Command="{Binding AddProduct}"></Button>
+        <Button  Margin="0,263,591,115" Content="Add Invoice"  Command="{Binding AddInvoice}"></Button>
+
     </Grid>
 </Window>

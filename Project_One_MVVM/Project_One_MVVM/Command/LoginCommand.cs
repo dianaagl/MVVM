@@ -11,9 +11,9 @@ namespace Project_One_MVVM.Commands
     internal class LoginCommand : ICommand
     {
         public event EventHandler CanExecuteChanged;
-        public EmployeeViewModel employeeViewModel;
+        public LoginViewModel employeeViewModel;
 
-        public LoginCommand(EmployeeViewModel model)
+        public LoginCommand(LoginViewModel model)
         {
             employeeViewModel = model;
         }
