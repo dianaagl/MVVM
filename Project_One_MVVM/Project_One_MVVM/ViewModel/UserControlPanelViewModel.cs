@@ -28,6 +28,7 @@ namespace Project_One_MVVM.ViewModel
         private ObservableCollection<Employee> employeeList = new ObservableCollection<Employee>();
         private ObservableCollection<Product> productList = new ObservableCollection<Product>();
         private ObservableCollection<Customer> customerList = new ObservableCollection<Customer>();
+        private ObservableCollection<Invoice> invoiceList = new ObservableCollection<Invoice>();
         public ICommand ReadEmployees { get; private set; }
         public ICommand ReadProducts { get; private set; } 
         public ICommand ReadInvoices { get; private set; }
@@ -67,11 +68,14 @@ namespace Project_One_MVVM.ViewModel
                         mySQLDatabase.Add(Customer.CUSTOMER_ID, Customer.CUSTOMER);
                         mySQLDatabase.ReadCustomers();
                         userControlPanel.dataGrid.ItemsSource = customerList;
+                        
                         break;
                     case Employee.EMPLOYEE:
                         mySQLDatabase.Add(Employee.ID, Employee.EMPLOYEE);
                         mySQLDatabase.ReadEmployee();
                         userControlPanel.dataGrid.ItemsSource = employeeList;
+                        OnPropertyChanged(Employee.FORENAME);
+
                         break;
                     case Product.PRODUCT:
                         mySQLDatabase.Add(Product.PRODUCT_ID, Product.PRODUCT);
@@ -79,6 +83,7 @@ namespace Project_One_MVVM.ViewModel
                         userControlPanel.dataGrid.ItemsSource = productList;
                         break;
                 }
+                userControlPanel.dataGrid.Items.Refresh();
 
               
             }, this);
@@ -99,25 +104,32 @@ namespace Project_One_MVVM.ViewModel
                         Customer item =  userControlPanel.dataGrid.SelectedItem as Customer;
                         id = item.CustomerId;
                         mySQLDatabase.Delete(Customer.CUSTOMER_ID, id, Customer.CUSTOMER);
-                        userControlPanel.dataGrid.ItemsSource = customerList;
+                       
                         break;
                     case Employee.EMPLOYEE:
                         Employee itemEmpl = userControlPanel.dataGrid.SelectedItem as Employee;
                         id = itemEmpl.Id;
                         mySQLDatabase.Delete(Employee.ID, id, Employee.EMPLOYEE);
-                        OnPropertyChanged("Employee");
-                        userControlPanel.dataGrid.ItemsSource = employeeList;
+
                         break;
                     case Product.PRODUCT:
                         Product itemProd = userControlPanel.dataGrid.SelectedItem as Product;
                         id = itemProd.ProductId;
                         mySQLDatabase.Delete(Product.PRODUCT_ID, id, Product.PRODUCT);
-                        userControlPanel.dataGrid.ItemsSource = productList;
+                        
+                        break;
+                    case Invoice.INVOICE:
+                        Invoice invoice = userControlPanel.dataGrid.SelectedItem as Invoice;
+                        id = invoice.Id;
+                        mySQLDatabase.Delete(Invoice.INVOICE, id, Invoice.INVOICE);
+                       
                         break;
                 }
-      
+                Read();
+                userControlPanel.dataGrid.Items.Refresh();
             }, this
                 );
+
         }
         public void Read()
         {
@@ -136,11 +148,12 @@ namespace Project_One_MVVM.ViewModel
                     userControlPanel.dataGrid.ItemsSource = productList;
                     break;
                 case Invoice.INVOICE:
-                    ObservableCollection<Invoice> InvoiceList = mySQLDatabase.ReadInvoices();
-                    DataGridTemplateColumn col = new DataGridTemplateColumn();// col = new DataGridTextColumn();
-                    userControlPanel.dataGrid.ItemsSource = InvoiceList;
+                    invoiceList = mySQLDatabase.ReadInvoices();
+                    //DataGridTemplateColumn col = new DataGridTemplateColumn();// col = new DataGridTextColumn();
+                    userControlPanel.dataGrid.ItemsSource = invoiceList;
                     break;
             }
+            
         }
 
         private void OnPropertyChanged(string propertyName)
