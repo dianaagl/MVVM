@@ -67,7 +67,7 @@
     <Compile Include="Model\Product.cs" />
     <Compile Include="Utilities\Database.cs" />
     <Compile Include="Utilities\mySQLDatabase.cs" />
-    <Compile Include="ViewModel\EmployeeCreateViewModel.cs" />
+    <Compile Include="ViewModel\InvoiceCreateViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\UserControlPanelViewModel.cs" />
     <Compile Include="View\CustomerCreateView.xaml.cs">
@@ -76,8 +76,8 @@
     <Compile Include="View\CustomerView.xaml.cs">
       <DependentUpon>CustomerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EmployeeCreateView.xaml.cs">
-      <DependentUpon>EmployeeCreateView.xaml</DependentUpon>
+    <Compile Include="View\InvoiceCreateView.xaml.cs">
+      <DependentUpon>InvoiceCreateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserControlPanel.xaml.cs">
       <DependentUpon>UserControlPanel.xaml</DependentUpon>
@@ -102,7 +102,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EmployeeCreateView.xaml">
+    <Page Include="View\InvoiceCreateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

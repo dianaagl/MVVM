@@ -33,7 +33,7 @@ namespace Project_One_MVVM.ViewModel
         public ICommand ReadInvoices { get; private set; }
         public ICommand Create { get; private set; }
         public ICommand AddCommand { get; private set; }
-
+        public ICommand Delete { get; private set; }
         public UserControlPanelViewModel(UserControlPanel userControlPanel)
         {
 
@@ -66,36 +66,58 @@ namespace Project_One_MVVM.ViewModel
                     case Customer.CUSTOMER:
                         mySQLDatabase.Add(Customer.CUSTOMER_ID, Customer.CUSTOMER);
                         mySQLDatabase.ReadCustomers();
+                        userControlPanel.dataGrid.ItemsSource = customerList;
                         break;
                     case Employee.EMPLOYEE:
                         mySQLDatabase.Add(Employee.ID, Employee.EMPLOYEE);
                         mySQLDatabase.ReadEmployee();
+                        userControlPanel.dataGrid.ItemsSource = employeeList;
                         break;
                     case Product.PRODUCT:
                         mySQLDatabase.Add(Product.PRODUCT_ID, Product.PRODUCT);
                         mySQLDatabase.ReadProducts();
+                        userControlPanel.dataGrid.ItemsSource = productList;
                         break;
                 }
+
               
             }, this);
             this.userControlPanel = userControlPanel;
             Create = new ReadCommand(obj =>
                 {
-                    EmployeeCreateView frm = new EmployeeCreateView();
+                    InvoiceCreateView frm = new InvoiceCreateView();
                     frm.Show();
                 }, this
                 );
-        }
-        private void setColumns(List<string> columnNames)
-        {
-            userControlPanel.dataGrid.Columns.Clear();
-            foreach(string columnName in columnNames){
-                DataGridTextColumn col = new DataGridTextColumn();
-                col.Header = columnName;
-                col.Width = 110;
-                col.Binding = new Binding(col.Header + " UpdateSourceTrigger = PropertyChanged"); 
-                userControlPanel.dataGrid.Columns.Add(col);
-            }
+            Delete = new ReadCommand(obj =>
+            {
+                int id;
+                switch (editTableName)
+                {
+                        
+                    case Customer.CUSTOMER:
+                        Customer item =  userControlPanel.dataGrid.SelectedItem as Customer;
+                        id = item.CustomerId;
+                        mySQLDatabase.Delete(Customer.CUSTOMER_ID, id, Customer.CUSTOMER);
+                        userControlPanel.dataGrid.ItemsSource = customerList;
+                        break;
+                    case Employee.EMPLOYEE:
+                        Employee itemEmpl = userControlPanel.dataGrid.SelectedItem as Employee;
+                        id = itemEmpl.Id;
+                        mySQLDatabase.Delete(Employee.ID, id, Employee.EMPLOYEE);
+                        OnPropertyChanged("Employee");
+                        userControlPanel.dataGrid.ItemsSource = employeeList;
+                        break;
+                    case Product.PRODUCT:
+                        Product itemProd = userControlPanel.dataGrid.SelectedItem as Product;
+                        id = itemProd.ProductId;
+                        mySQLDatabase.Delete(Product.PRODUCT_ID, id, Product.PRODUCT);
+                        userControlPanel.dataGrid.ItemsSource = productList;
+                        break;
+                }
+      
+            }, this
+                );
         }
         public void Read()
         {

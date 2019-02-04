@@ -9,15 +9,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Project_One_MVVM.Command;
 using System;
+using System.Windows.Data;
 namespace Project_One_MVVM.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that a View can data bind to.
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
-    public class EmployeeCreateViewModel 
+    public class InvoiceCreateViewModel 
     {
         private ObservableCollection<Product> products = new ObservableCollection<Product>();
         ObservableCollection<int> prodCount = new ObservableCollection<int>();
@@ -26,21 +21,12 @@ namespace Project_One_MVVM.ViewModel
         /// <summary>
         /// Initializes a new instance of the EmployeeCreateView class.
         /// </summary>
-        public EmployeeCreateViewModel(EmployeeCreateView view)
+        public InvoiceCreateViewModel(InvoiceCreateView view)
         {
-            bool _canExecuteMyCommand = false;
             ObservableCollection<Employee> emplList = mySQLDatabase.ReadEmployee();
-            
-
-///foreach(Employee empl in emplList)
-           // {
-               // ComboBoxItem item = new ComboBoxItem();
-                          
             view.Employee.DisplayMemberPath = "Surname";
-            //view.Employee.SelectedValuePath = "Value";
             view.Employee.ItemsSource = emplList;
-                //view.Employee.Items.Add(empl.Surname);
-            //}
+
             ObservableCollection<Customer> cusList = mySQLDatabase.ReadCustomers();
              view.customer.DisplayMemberPath = "Surname";
             view.customer.ItemsSource = cusList;
@@ -52,33 +38,26 @@ namespace Project_One_MVVM.ViewModel
             {
                 try{
                     //int c = Convert.ToInt32(view.Count.Text);
+                    Product selectedProd = view.Product.SelectionBoxItem as Product;
+                    selectedProd.ProductCount = Convert.ToInt32(view.Count.Text.ToString());
                     products.Add(view.Product.SelectionBoxItem as Product);
-                    prodCount.Add(Convert.ToInt32( view.Count.Text.ToString()));
+                    prodCount.Add(Convert.ToInt32(view.Count.Text.ToString()));
+
+                    view.dataGrid.ItemsSource = products;
                 }
                 catch(Exception e){
 
                 }
-            }
-                );
+           });
 
            AddInvoice = new ReadCommand(obj =>
            {
-               try
-               {
-                   //int c = Convert.ToInt32(view.Count.Text);
-                   long listId = mySQLDatabase.Add(ProductList, prodCount);
-                   mySQLDatabase.Add((view.customer.SelectionBoxItem as Customer).CustomerId,
-                       (view.Employee.SelectionBoxItem as Employee).Id,
-                       listId,
-                       Invoice.INVOICE);
-                  
-               }
-               catch (Exception e)
-               {
-
-               }
-           }
-    );
+                long listId = mySQLDatabase.AddProductsList(ProductList, prodCount);
+                mySQLDatabase.AddInvoice((view.customer.SelectionBoxItem as Customer).CustomerId,
+                    (view.Employee.SelectionBoxItem as Employee).Id,
+                    listId,
+                    Invoice.INVOICE);
+           });
         }
     }
 }

@@ -325,45 +325,75 @@ namespace Project_One_MVVM.Utilities
             conn.Close();
         }
     }
-    public static long Add(ObservableCollection<Product> products, ObservableCollection<int> prodNumber)
+    public static void Delete(string idName, int id, string tableName)
+    {
+        try
+        {
+            conn.Open();
+            string comText = String.Format(
+                "Delete FROM {0} WHERE {1} = {2}"
+                   , tableName, idName, id);
+
+            MySqlCommand cmd = new MySqlCommand(comText, conn);
+            int numRowsUpdated = cmd.ExecuteNonQuery();
+
+        }
+        catch (Exception e)
+        {
+
+        }
+        finally
+        {
+            conn.Close();
+        }
+    }
+    private static long getListId()
     {
         long id = -1;
         try
         {
             conn.Open();
-
-            string comText = 
-                "SELECT ID FROM ProductsList";
-
+            string comText = "SELECT ID FROM ProductsList";
             MySqlCommand cmd = new MySqlCommand(comText, conn);
             MySqlDataReader dataReader = cmd.ExecuteReader();
             ObservableCollection<long> prodListIds = new ObservableCollection<long>();
 
             while (dataReader.Read())
             {
-
-                prodListIds.Add(
-                    Convert.ToInt64(dataReader["id"])
-
-              );
+                prodListIds.Add(Convert.ToInt64(dataReader["id"]));
             }
             id = prodListIds.Max();
-            id ++;
+            id++;
+        }
+        catch (Exception e)
+        {
+
+        }
+        finally
+        {
             conn.Close();
+        }
+        return id;
+        
+    }
+    public static long AddProductsList(ObservableCollection<Product> products, ObservableCollection<int> prodNumber)
+    {
+        long id = -1;
+        try
+        {
+            id = getListId();
             for (int i = 0; i < prodNumber.Count; i++)
             {
                 conn.Open();
                 string comText2 = String.Format(
                             "INSERT INTO {0} (id , productId , productCount)" +
                             "VALUES ( {1}, {2}, {3} )", "ProductsList",
-                            id, products[i].ProductId, prodNumber[i]);
+                            id, products[i].ProductId, products[i].ProductCount);
 
                 MySqlCommand cmd2 = new MySqlCommand(comText2, conn);
                 cmd2.ExecuteNonQuery();
                 conn.Close();
             }
-           
-
         }
         catch (Exception e)
         {
@@ -375,19 +405,17 @@ namespace Project_One_MVVM.Utilities
         }
         return id;
     }
-    public static void Add( int customerId,int employeeId, long prodListId, string tableName)
+    public static void AddInvoice( int customerId,int employeeId, long prodListId, string tableName)
     {
-
         try
         {
             conn.Open();
             string comText = String.Format(
-                "INSERT INTO {0} ( id, customerId , productListId)" +
-                    "VALUES (NULL ,  {1}, {2} )", tableName,customerId, prodListId);
+                "INSERT INTO {0} ( id, customerId ,employeeId, productListId)" +
+                    "VALUES (NULL ,  {1}, {2} , {3} )", tableName, customerId, employeeId, prodListId);
 
             MySqlCommand cmd = new MySqlCommand(comText, conn);
             int numRowsUpdated = cmd.ExecuteNonQuery();
-
         }
         catch (Exception e)
         {

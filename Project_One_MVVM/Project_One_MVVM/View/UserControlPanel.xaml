@@ -32,7 +32,7 @@
         <Button Content="SQL Join" HorizontalAlignment="Left" Margin="802,249,0,0" VerticalAlignment="Top" Width="172"/>
         <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Height="254" Margin="10,164,0,0" VerticalAlignment="Top" Width="752"/>
         <Button Content="Update" HorizontalAlignment="Left" Margin="802,295,0,0" VerticalAlignment="Top" Width="172"/>
-        <Button Content="Delete" HorizontalAlignment="Left" Margin="802,323,0,0" VerticalAlignment="Top" Width="172"/>
+        <Button Content="Delete" HorizontalAlignment="Left" Margin="802,323,0,0" VerticalAlignment="Top" Width="172" Command="{Binding Delete}"/>
         <Label Content="Console:" HorizontalAlignment="Left" Margin="10,430,0,0" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="79,432,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="683" SelectionBrush="Black">
             <TextBox.BorderBrush>
